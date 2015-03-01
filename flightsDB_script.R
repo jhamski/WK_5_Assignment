@@ -26,6 +26,7 @@ weather <- filter(weather, '2013-02-23' <= date & '2013-03-01' >= date)
 # Round all the rows in the flights column "dep_time" 
 # This isn't quite right- since the rounding will happen at "5" not "3". I know there's a work around
 # by converting to a better date/time class or by using the Lubridate package, but I didn't have a chance to implement.
+# the max error is 1 hour, which is likely acceptable, but far from ideal. 
 
 flights$dep_time <-round(flights$dep_time, -2)/100
 

@@ -18,31 +18,31 @@ flights$date <- as.Date(flights$date)
 weather<- unite(weather.input,col = "date", year, month, day, sep = "-")
 weather$date <- as.Date(weather$date)
 
-# filter both by date. this makes a smaller dataset that's faster to work with and easier to QA
+# filter both by date. this makes a smaller data frame that's faster to work with and easier to QA
 flights <- filter(flights, '2013-02-23' <= date & '2013-03-01' >= date)
 weather <- filter(weather, '2013-02-23' <= date & '2013-03-01' >= date)
 
-#####################################
-
 # Join the three tables. Flights and Weather are hardest to join because their hours are not in the same format.
-# Round all the rows in the flights column "dep_time" to the nearest hour
+# Round all the rows in the flights column "dep_time" 
+# This isn't quite right- since the rounding will happen at "5" not "3". I know there's a work around
+# by converting to a better date/time class or by using the Lubridate package, but I didn't have a chance to implement.
 
+flights$dep_time <-round(flights$dep_time, -2)/100
 
-# flights and weather join on "date", flights and planes join on "tailnum"
+flights <- unite(flights,col = "date-time", date, dep_time, sep = " ")
+weather <- unite(weather,col = "date-time", date, hour, sep = " ")
+
 # the final data frame for the assignment will be called flights.DF
-flights.DF <- left_join(flights, weather, by = "date")
-flights.DF <- left_join(flights.j, planes, by = "tailnum")
+flights.DF <- left_join(flights, weather, by = "date-time")
 
-#####################################
+# flights and planes join on "tailnum"
+flights.DF <- left_join(flights.DF, planes, by = "tailnum")
 
 # now flights.DF has way more columns than are required, so select is used
-# I'm keeping date and tailnum in so I can run a SQL query to check my work
 
-flights.DF <- select(flights.DF, date, tailnum, origin.x, 
+flights.DF <- select(flights.DF, origin.x, 
                      carrier, temp, dep_delay, arr_delay, air_time, seats)
 
-# checking my work - see line xx in SQL script 
-# during development, this step showed that I had not performed the proper joins
-(filter(flights.DF, 'N502UA' == tailnum))
+
 
 

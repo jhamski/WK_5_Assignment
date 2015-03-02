@@ -10,4 +10,4 @@ Goal is to created a data frame in R with:
 • Air Time in Minutes
 • Seating Capacity of Airplane
 
-from 2/23/2013 to 3/1/2013.
+In the date range 2/23/2013 to 3/1/2013.

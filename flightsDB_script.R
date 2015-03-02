@@ -2,8 +2,6 @@
 # James Hamski | james.hamski@spsmail.cuny.edu
 # primary reference: [PDF] - http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
 
-setwd("/Users/jim/Documents/Graduate\ School/IS\ 607/Week\ 5/WK_5_Assignment")
-
 library("dplyr")
 library("tidyr")
 
@@ -37,13 +35,14 @@ weather <- unite(weather,col = "date-time", date, hour, sep = " ")
 flights.DF <- left_join(flights, weather, by = "date-time")
 
 # flights and planes join on "tailnum"
-flights.DF <- left_join(flights.DF, planes, by = "tailnum")
+flights.DF <- left_join(flights.DF, planes.input, by = "tailnum")
 
 # now flights.DF has way more columns than are required, so select is used
 
 flights.DF <- select(flights.DF, origin.x, 
                      carrier, temp, dep_delay, arr_delay, air_time, seats)
 
-
+#the str function indicates the data frame is as specified by the assignment
+str(flights.DF)
 
 
